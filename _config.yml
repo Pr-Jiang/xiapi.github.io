@@ -1,7 +1,6 @@
 theme: jekyll-theme-tactile
 lsi: false
 safe: true
-source: xiapi.github.io
 incremental: false
 highlighter: rouge
 gist:
