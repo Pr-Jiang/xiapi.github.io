@@ -1,0 +1,57 @@
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">Singleton</span> <span class="o">{</span>
+
+  <span class="kd">private</span> <span class="nf">Singleton</span><span class="o">()</span> <span class="o">{</span>
+  <span class="o">}</span>
+
+  <span class="kd">private</span> <span class="kd">static</span> <span class="kd">class</span> <span class="nc">SingletonContainer</span> <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Singleton</span> <span class="no">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">Singleton</span><span class="o">();</span>
+  <span class="o">}</span>
+
+  <span class="kd">public</span> <span class="kd">static</span> <span class="kd">final</span> <span class="nc">Singleton</span> <span class="nf">getInstance</span><span class="o">()</span> <span class="o">{</span>
+    <span class="k">return</span> <span class="nc">SingletonContainer</span><span class="o">.</span><span class="na">INSTANCE</span><span class="o">;</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+    <p>JVM内部保证一个类加载的时候是线程互斥的</p>
+  </li>
+  <li>
+    <p>final字段保证INSTANCE的初始化过程</p>
+  </li>
+</ul>
+
+<p>静态内部类只有在getInstance()方法第一次被调用时<strong>才会被加载</strong>（懒汉模式）</p>
+
+<p>Effective Java中提供如下写法</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="nc">SingletonEnum</span> <span class="o">{</span>
+  <span class="no">INSTNCE</span><span class="o">;</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>Javac 编译后</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">enum</span> <span class="nc">SingletonEnum</span> <span class="o">{</span>
+  <span class="no">INSTNCE</span><span class="o">;</span>
+
+  <span class="kd">private</span> <span class="nf">SingletonEnum</span><span class="o">()</span> <span class="o">{</span>
+  <span class="o">}</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>enum无常提供了序列化并绝对防止多次实例化</p>
+
+<p>An <code class="highlighter-rouge">enum</code> type is a special type of <code class="highlighter-rouge">class</code>.</p>
+
+<p>Your <code class="highlighter-rouge">enum</code> will actually be compiled to something like</p>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">final</span> <span class="kd">class</span> <span class="nc">MySingleton</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">final</span> <span class="kd">static</span> <span class="nc">MySingleton</span> <span class="no">INSTANCE</span> <span class="o">=</span> <span class="k">new</span> <span class="nc">MySingleton</span><span class="o">();</span>
+    <span class="kd">private</span> <span class="nf">MySingleton</span><span class="o">(){}</span> 
+<span class="o">}</span>
+</code></pre></div></div>
+
